@@ -35,6 +35,12 @@ def results(request):
     pm25_nums = [x[0] for x in pm25_list]
     average = statistics.mean(pm25_nums)
     std = statistics.stdev(pm25_nums)
+    def get_time(cityid):
+        cursor.execute('''SELECT datetime FROM aq_data WHERE city_id = (%s)''', (cityid,))
+        records = cursor.fetchall()
+        return(records)
+    datetime_list = get_time(cityid)
+    datetime_nums = [x[0] for x in datetime_list]
     
-    context = {'pm25_list' : pm25_nums, 'average': average, 'std': std}
+    context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': average, 'std': std}
     return render(request, 'graph/results.html', context)
