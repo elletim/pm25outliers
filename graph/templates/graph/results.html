@@ -10,15 +10,45 @@
     <script type="text/javascript">
         var myChart = echarts.init(document.getElementById('main'));
         var option = {
+            legend: {
+                orient: 'vertical',
+                right: 10,
+                top: 'center'
+            },
             xAxis: {
-            data: {{ datetime_list }}
+            data: "{{ datetime_list }}"
         }, 
         yAxis: {},
         series: [
             {
                 name: 'pm2.5',
-                type: 'line',
+                type: 'bar',
                 data : {{ pm25_list }}
+            },
+            {
+                name: 'average',
+                type: 'line',
+                data: {{ average }}
+            },
+            {
+                name: 'Plus 1 StDev',
+                type: 'line',
+                data: {{ plusstdv1 }} 
+            },
+            {
+                name: 'Minus 1 StDev',
+                type: 'line',
+                data: {{ minusstdv1 }} 
+            },
+            {
+                name: 'Plus 2 StDev',
+                type: 'line',
+                data: {{ plusstdv2 }} 
+            },
+            {
+                name: 'Minus 2 StDev',
+                type: 'line',
+                data: {{ minusstdv2 }} 
             }
         ]
         };
