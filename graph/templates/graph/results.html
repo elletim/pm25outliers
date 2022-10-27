@@ -10,13 +10,17 @@
     <script type="text/javascript">
         var myChart = echarts.init(document.getElementById('main'));
         var option = {
+            title: {
+                text: "{{ city }}"
+            },
             legend: {
                 orient: 'vertical',
                 right: 10,
-                top: 'center'
+                top: 50
             },
             xAxis: {
-            data: "{{ datetime_list }}"
+            type: 'category',
+            data: {{ datetime_list }}
         }, 
         yAxis: {},
         series: [
