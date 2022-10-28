@@ -36,11 +36,10 @@ def results(request):
     average = statistics.mean(pm25_nums)
     averagevar = [average] * len(pm25_nums)
     std = statistics.stdev(pm25_nums)
-    stdv1 = [average + std] * len(pm25_nums)
-    stdv_1 = [average - std] * len(pm25_nums)
     stdv2 = [average + (2*std)] * len(pm25_nums)
     stdv_2 = [average - (2*std)] * len(pm25_nums)
-    
+    stdv3 = [average + (3*std)] * len(pm25_nums)
+    stdv_3 = [average - (3*std)] * len(pm25_nums)
     def get_time(cityid):
         cursor.execute('''SELECT datetime FROM aq_data WHERE city_id = (%s)''', (cityid,))
         records = cursor.fetchall()
@@ -51,5 +50,10 @@ def results(request):
     datetime_nums = [int(x) for x in datetime_nums]
 
     context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': averagevar, 'std': std,
-    'plusstdv1' : stdv1, 'minusstdv1' : stdv_1, 'plusstdv2' : stdv2, 'minusstdv2' : stdv_2, 'city': selected_choice}
+    'plusstdv2' : stdv2, 'minusstdv2' : stdv_2, 'plusstdv3' : stdv3, 'minusstdv3' : stdv_3, 'city': selected_choice}
     return render(request, 'graph/results.html', context)
+
+def scatter(request):
+    
+    context = {'a' : 1}
+    return render(request, 'graph/scatter.html', context)

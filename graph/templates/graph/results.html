@@ -11,7 +11,11 @@
         var myChart = echarts.init(document.getElementById('main'));
         var option = {
             title: {
-                text: "{{ city }}"
+                text: "{{ city }}",
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis'
             },
             legend: {
                 orient: 'vertical',
@@ -39,16 +43,6 @@
                 data: {{ average }}
             },
             {
-                name: '+1 stdv',
-                type: 'line',
-                data: {{ plusstdv1 }} 
-            },
-            {
-                name: '-1 stdv',
-                type: 'line',
-                data: {{ minusstdv1 }} 
-            },
-            {
                 name: '+2 stdv',
                 type: 'line',
                 data: {{ plusstdv2 }} 
@@ -57,7 +51,19 @@
                 name: '-2 stdv',
                 type: 'line',
                 data: {{ minusstdv2 }} 
+            },
+            {
+                name: '+3 stdv',
+                type: 'line',
+                data: {{ plusstdv3 }} 
+            },
+            {
+                name: '-3 stdv',
+                type: 'line',
+                data: {{ minusstdv3 }} 
             }
+          
+            
         ]
         };
         myChart.setOption(option);
@@ -68,4 +74,7 @@
 </html>
 
 
+
+
 <a href="{% url 'question'%}">Choose a new city?</a>
+<a href="{% url 'scatter'%}">See a scatter plot?</a>
