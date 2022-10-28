@@ -6,7 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
   </head>
   <body>
-    <div id="main" style="width: 600px;height:400px;"></div>
+    <div id="main" style="width: 1300px;height:600px;"></div>
     <script type="text/javascript">
         var myChart = echarts.init(document.getElementById('main'));
         var option = {
@@ -20,12 +20,16 @@
             },
             xAxis: {
             type: 'category',
+            axisLabel: {
+                interval: 3000,
+                rotate:45
+            },
             data: {{ datetime_list }}
         }, 
         yAxis: {},
         series: [
             {
-                name: 'pm2.5',
+                name: 'pm2.5 level',
                 type: 'bar',
                 data : {{ pm25_list }}
             },
@@ -35,22 +39,22 @@
                 data: {{ average }}
             },
             {
-                name: 'Plus 1 StDev',
+                name: '+1 stdv',
                 type: 'line',
                 data: {{ plusstdv1 }} 
             },
             {
-                name: 'Minus 1 StDev',
+                name: '-1 stdv',
                 type: 'line',
                 data: {{ minusstdv1 }} 
             },
             {
-                name: 'Plus 2 StDev',
+                name: '+2 stdv',
                 type: 'line',
                 data: {{ plusstdv2 }} 
             },
             {
-                name: 'Minus 2 StDev',
+                name: '-2 stdv',
                 type: 'line',
                 data: {{ minusstdv2 }} 
             }

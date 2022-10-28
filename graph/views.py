@@ -36,20 +36,20 @@ def results(request):
     average = statistics.mean(pm25_nums)
     averagevar = [average] * len(pm25_nums)
     std = statistics.stdev(pm25_nums)
-    plusstdv1 = [average + std] * len(pm25_nums)
-    minusstdv1 = [average - std] * len(pm25_nums)
-    plusstdv2 = [average + (2*std)] * len(pm25_nums)
-    minusstdv2 = [average - (2*std)] * len(pm25_nums)
-    templabel = [1] 
-    templabel = templabel * len(pm25_list)
+    stdv1 = [average + std] * len(pm25_nums)
+    stdv_1 = [average - std] * len(pm25_nums)
+    stdv2 = [average + (2*std)] * len(pm25_nums)
+    stdv_2 = [average - (2*std)] * len(pm25_nums)
+    
     def get_time(cityid):
         cursor.execute('''SELECT datetime FROM aq_data WHERE city_id = (%s)''', (cityid,))
         records = cursor.fetchall()
         return(records)
     datetime_list = get_time(cityid)
     datetime_nums = [x[0] for x in datetime_list]
-
     datetime_nums = [date_obj.strftime('%Y%m%d') for date_obj in datetime_nums]
-    context = {'pm25_list' : pm25_nums, 'datetime_list': templabel, 'average': averagevar, 'std': std,
-    'plusstdv1' : plusstdv1, 'minusstdv1' : minusstdv1, 'plusstdv2' : plusstdv2, 'minusstdv2' : minusstdv2, 'city': selected_choice}
+    datetime_nums = [int(x) for x in datetime_nums]
+
+    context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': averagevar, 'std': std,
+    'plusstdv1' : stdv1, 'minusstdv1' : stdv_1, 'plusstdv2' : stdv2, 'minusstdv2' : stdv_2, 'city': selected_choice}
     return render(request, 'graph/results.html', context)
