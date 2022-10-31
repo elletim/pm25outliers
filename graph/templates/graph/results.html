@@ -22,6 +22,11 @@
                 right: 10,
                 top: 50
             },
+            grid: {
+                left: '5%',
+                right: '15%',
+                bottom: '10%'
+            },
             xAxis: {
             type: 'category',
             axisLabel: {
@@ -31,6 +36,25 @@
             data: {{ datetime_list }}
         }, 
         yAxis: {},
+        toolbox: {
+        right: 10,
+        feature: {
+          dataZoom: {
+            yAxisIndex: 'none'
+          },
+          restore: {},
+          saveAsImage: {}
+          }
+        },
+        dataZoom: [
+        {
+          startValue: 2004040100
+        },
+        {
+          type: 'inside'
+        }
+        ],
+
         series: [
             {
                 name: 'pm2.5 level',
@@ -68,7 +92,79 @@
         };
         myChart.setOption(option);
 
+    
+
     </script>
+        <div id="main2" style="width: 1300px;height:600px;"></div>
+        <script type="text/javascript">
+            var myChart2 = echarts.init(document.getElementById('main2'));
+            var option = {
+                title: {
+                    text: "Scatter Plot",
+                    left: 'center'
+                },
+                tooltip: {
+                    triger: 'item',
+                    axisPointer: {
+                        type: 'cross'
+                    }
+                },
+                visualMap: {
+                    max: {{ maxpm25 }},
+                    min: {{ minpm25 }},
+                    dimension: 1,
+                    orient: 'vertical',
+                    right: 10,
+                    top: 'center',
+                    text: ['high', 'low'],
+                    caculate: true,
+                    inRange: {
+                        color: ['#f2c31a', '#24b7f2']
+                    }
+                },
+                xAxis: [
+                    {
+                        type: 'value',
+                        scale: true,
+                        axisLabel: {
+                            formatter: '{value} date'
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        scale: true,
+                        axisLabel: {
+                            formatter: '{value} pm2.5'
+                        },
+                        splitLine: {
+                            show: false 
+                        }
+                    }       
+                ],
+                series: [
+                    {
+                        name: 'pm2.5 levels',
+                        type: 'scatter',
+                        symbolSize: 5,
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: {{ merge }}
+                    }
+                ]
+
+                
+            };
+            myChart2.setOption(option);
+    
+        
+    
+        </script>
   </body>
 
 </html>
@@ -77,4 +173,3 @@
 
 
 <a href="{% url 'question'%}">Choose a new city?</a>
-<a href="{% url 'scatter'%}">See a scatter plot?</a>
