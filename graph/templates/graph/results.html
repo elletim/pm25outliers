@@ -34,28 +34,28 @@
                 rotate:45
             },
             data: {{ datetime_list }}
-        }, 
-        yAxis: {},
-        toolbox: {
-        right: 10,
-        feature: {
-          dataZoom: {
-            yAxisIndex: 'none'
-          },
-          restore: {},
-          saveAsImage: {}
-          }
-        },
-        dataZoom: [
-        {
-          startValue: 2004040100
-        },
-        {
-          type: 'inside'
-        }
-        ],
+            }, 
+            yAxis: {},
+            toolbox: {
+                right: 10,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                },
+                restore: {},
+                saveAsImage: {}
+                }
+            },
+            dataZoom: [
+            {
+                startValue: {{ startvalue }}
+            },
+            {
+                type: 'inside'
+            }
+            ],
 
-        series: [
+            series: [
             {
                 name: 'pm2.5 level',
                 type: 'bar',
@@ -103,9 +103,38 @@
                     text: "Scatter Plot",
                     left: 'center'
                 },
+                grid: {
+                    left: '3%',
+                    right: '7%',
+                    bottom: '7%',
+                    containLabel: true
+                },
                 tooltip: {
-                    triger: 'item',
+                    trigger: 'axis',
+                    showDelay: 0,
+                    formatter: function (params) {
+                        if (params.value.lenght > 1) {
+                            return (
+                                params.seriesName + 
+                                ' :<br/>' +
+                                params.value[0] +
+                                'date ' +
+                                params.values[1] +
+                                'pm2.5' 
+                            );
+                            } else {
+                            return (
+                                params.seriesName + 
+                                ' :<br/>' +
+                                params.value[0] +
+                                'date ' +
+                                params.values[1] +
+                                'pm2.5' 
+                            );
+                            }
+                    },
                     axisPointer: {
+                        show: true,
                         type: 'cross'
                     }
                 },

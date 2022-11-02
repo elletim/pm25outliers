@@ -57,9 +57,10 @@ def results(request):
     datetime_nums = [x[0] for x in datetime_list]
     datetime_nums = [date_obj.strftime('%Y%m%d%H') for date_obj in datetime_nums]
     datetime_nums = [int(x) for x in datetime_nums]
+    startvalue = datetime_nums[0]
     merge = [list(i) for i in zip(datetime_nums, pm25_nums)]
     context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': averagevar, 'std': std,
     'plusstdv2' : stdv2, 'minusstdv2' : stdv_2, 'plusstdv3' : stdv3, 'minusstdv3' : stdv_3, 
-    'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': merge}
+    'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': merge, 'startvalue': startvalue}
     return render(request, 'graph/results.html', context)
 
