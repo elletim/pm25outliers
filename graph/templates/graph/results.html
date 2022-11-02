@@ -110,28 +110,27 @@
                     containLabel: true
                 },
                 tooltip: {
-                    trigger: 'axis',
                     showDelay: 0,
                     formatter: function (params) {
-                        if (params.value.lenght > 1) {
+                        if (params.value.length > 1) {
                             return (
                                 params.seriesName + 
                                 ' :<br/>' +
                                 params.value[0] +
-                                'date ' +
-                                params.values[1] +
-                                'pm2.5' 
+                                ' date ' +
+                                params.value[1] +
+                                ' pm2.5' 
                             );
-                            } else {
+                        } else {
                             return (
                                 params.seriesName + 
                                 ' :<br/>' +
-                                params.value[0] +
-                                'date ' +
-                                params.values[1] +
-                                'pm2.5' 
+                                params.name +
+                                ' date ' +
+                                params.value +
+                                ' pm2.5' 
                             );
-                            }
+                        }
                     },
                     axisPointer: {
                         show: true,
@@ -148,15 +147,15 @@
                     text: ['high', 'low'],
                     caculate: true,
                     inRange: {
-                        color: ['#f2c31a', '#24b7f2']
+                        color: ['gold', 'red']
                     }
                 },
                 xAxis: [
                     {
-                        type: 'value',
+                        type: 'category',
                         scale: true,
                         axisLabel: {
-                            formatter: '{value} date'
+                            formatter: '{value}'
                         },
                         splitLine: {
                             show: false
@@ -168,7 +167,7 @@
                         type: 'value',
                         scale: true,
                         axisLabel: {
-                            formatter: '{value} pm2.5'
+                            formatter: '{value}'
                         },
                         splitLine: {
                             show: false 
@@ -182,10 +181,12 @@
                         symbolSize: 5,
                         emphasis: {
                             focus: 'series'
-                        },
+                        },   
                         data: {{ merge }}
+
                     }
-                ]
+                ],
+                
 
                 
             };

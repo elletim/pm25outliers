@@ -1,10 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-import pandas as pd 
-import requests as req
-from io import StringIO
 from .models import Choice, Question
-from django.template import loader
 import statistics
 
 import psycopg2
