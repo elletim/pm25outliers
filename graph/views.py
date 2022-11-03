@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from .models import Choice, Question
 import statistics
-
 import psycopg2
+import config 
 
 def question(request):
     question = Question.objects.get(pk=1)
@@ -10,21 +10,24 @@ def question(request):
     return render(request, 'graph/question.html', context)
 
 def get_id(selected_choice):
-        connection = psycopg2.connect("dbname=aq user=postgres")
+        login = config.postgres["login"]
+        connection = psycopg2.connect(login)
         cursor = connection.cursor()
         cursor.execute('''SELECT city_id FROM aq_meta WHERE city = (%s)''', (selected_choice,))
         records = cursor.fetchall()
         return records
 
 def get_pm25(cityid):
-        connection = psycopg2.connect("dbname=aq user=postgres")
+        login = config.postgres["login"]
+        connection = psycopg2.connect(login)
         cursor = connection.cursor()
         cursor.execute('''SELECT pm2_5 FROM aq_data WHERE city_id = (%s)''', (cityid,))
         records = cursor.fetchall()
         return records 
 
 def get_time(cityid):
-        connection = psycopg2.connect("dbname=aq user=postgres")
+        login = config.postgres["login"]
+        connection = psycopg2.connect(login)
         cursor = connection.cursor()
         cursor.execute('''SELECT datetime FROM aq_data WHERE city_id = (%s)''', (cityid,))
         records = cursor.fetchall()
