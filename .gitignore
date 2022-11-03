@@ -1,5 +1,4 @@
 .DS_Store
 db.sqlite3
 config.py 
-__pycache__/config.cpython-37.pyc
-graph/__pycache__/views.cpython-37.pyc
+*.pyc
