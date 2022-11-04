@@ -9,6 +9,16 @@ def question(request):
     context = {'question':  question}
     return render(request, 'graph/question.html', context)
 
+def question2(request):
+    question = Question.objects.get(pk=1)
+    context = {'question':  question}
+    return render(request, 'graph/question2.html', context)
+
+def question3(request):
+    question = Question.objects.get(pk=1)
+    context = {'question':  question}
+    return render(request, 'graph/question3.html', context)
+
 def get_id(selected_choice):
         login = config.postgres["login"]
         connection = psycopg2.connect(login)
@@ -33,7 +43,6 @@ def results(request):
     cityid = cityid[0]
     cityid = int(str(cityid).replace('(', '').replace(')','').replace(',',''))
     pm25_list = get_pm25(cityid)
-    print(pm25_list[:20])
     pm25_nums = [x[0] for x in pm25_list]
     datetime_nums = [x[1] for x in pm25_list]
     average = statistics.mean(pm25_nums)
@@ -45,8 +54,6 @@ def results(request):
     stdv_3 = [average - (3*std)] * len(pm25_nums)
     minpm25 = min(pm25_nums)
     maxpm25 = max(pm25_nums)
-    #datetime_list = get_time(cityid)
-    #datetime_nums = [x[0] for x in datetime_list]
     datetime_nums = [date_obj.strftime('%Y%m%d%H') for date_obj in datetime_nums]
     datetime_nums = [int(x) for x in datetime_nums]
     startvalue = datetime_nums[0]
@@ -55,4 +62,5 @@ def results(request):
     'plusstdv2' : stdv2, 'minusstdv2' : stdv_2, 'plusstdv3' : stdv3, 'minusstdv3' : stdv_3, 
     'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': merge, 'startvalue': startvalue}
     return render(request, 'graph/results.html', context)
+
 

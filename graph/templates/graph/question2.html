@@ -1,0 +1,15 @@
+<form action="{% url 'results'%}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend><h1>{{ question.question_text }}</h1></legend>
+        
+        <label for="question">{{ question.question_text }}</label><br>
+        <select name= "choice" id= "question">
+            {% for choice in question.choice_set.all %}
+            <option value =" {{ choice.id }}">{{ choice.choice_text }}</option>
+            {% endfor %}
+        </select>
+
+    </fieldset>
+    <input type="submit" value="Submit">
+</form>
