@@ -3,9 +3,9 @@ from . import views
 
 urlpatterns = [
     path('hour/', views.question, name='question'),
-    path('results/', views.results, name='results'),
+    path('hour/results/', views.results, name='results'),
     path('month/', views.question2, name='question2'),
-     path('day/', views.question3, name='question3')
-
-    
+    path('month/results/', views.results2, name='results2'),
+    path('day/', views.question3, name='question3'),
+    path('day/results/', views.results3, name='results3'),  
 ]

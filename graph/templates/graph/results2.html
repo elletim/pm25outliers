@@ -1,0 +1,203 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+  </head>
+  <body>
+    <div id="main" style="width: 1300px;height:600px;"></div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        var option = {
+            title: {
+                text: "{{ city }}",
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                orient: 'vertical',
+                right: 10,
+                top: 50
+            },
+            grid: {
+                left: '5%',
+                right: '15%',
+                bottom: '10%'
+            },
+            xAxis: {
+            type: 'category',
+            axisLabel: {
+                interval: 3000,
+                rotate:45
+            },
+            data: {{ datetime_list }}
+            }, 
+            yAxis: {},
+            toolbox: {
+                right: 10,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                },
+                restore: {},
+                saveAsImage: {}
+                }
+            },
+            dataZoom: [
+            {
+                startValue: {{ startvalue }}
+            },
+            {
+                type: 'inside'
+            }
+            ],
+
+            series: [
+            {
+                name: 'pm2.5 level',
+                type: 'bar',
+                data : {{ pm25_list }}
+            },
+            {
+                name: 'average',
+                type: 'line',
+                data: {{ average }}
+            },
+            {
+                name: '+2 stdv',
+                type: 'line',
+                data: {{ plusstdv2 }} 
+            },
+            {
+                name: '-2 stdv',
+                type: 'line',
+                data: {{ minusstdv2 }} 
+            },
+            {
+                name: '+3 stdv',
+                type: 'line',
+                data: {{ plusstdv3 }} 
+            },
+            {
+                name: '-3 stdv',
+                type: 'line',
+                data: {{ minusstdv3 }} 
+            }
+          
+            
+        ]
+        };
+        myChart.setOption(option);
+
+    
+
+    </script>
+        <div id="main2" style="width: 1300px;height:600px;"></div>
+        <script type="text/javascript">
+            var myChart2 = echarts.init(document.getElementById('main2'));
+            var option = {
+                title: {
+                    text: "Scatter Plot",
+                    left: 'center'
+                },
+                grid: {
+                    left: '3%',
+                    right: '7%',
+                    bottom: '7%',
+                    containLabel: true
+                },
+                tooltip: {
+                    showDelay: 0,
+                    formatter: function (params) {
+                        if (params.value.length > 1) {
+                            return (
+                                params.seriesName + 
+                                ' :<br/>' +
+                                params.value[0] +
+                                ' date ' +
+                                params.value[1] +
+                                ' pm2.5' 
+                            );
+                        } else {
+                            return (
+                                params.seriesName + 
+                                ' :<br/>' +
+                                params.name +
+                                ' date ' +
+                                params.value +
+                                ' pm2.5' 
+                            );
+                        }
+                    },
+                    axisPointer: {
+                        show: true,
+                        type: 'cross'
+                    }
+                },
+                visualMap: {
+                    max: {{ maxpm25 }},
+                    min: {{ minpm25 }},
+                    dimension: 1,
+                    orient: 'vertical',
+                    right: 10,
+                    top: 'center',
+                    text: ['high', 'low'],
+                    caculate: true,
+                    inRange: {
+                        color: ['gold', 'red']
+                    }
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        scale: true,
+                        axisLabel: {
+                            formatter: '{value}'
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        scale: true,
+                        axisLabel: {
+                            formatter: '{value}'
+                        },
+                        splitLine: {
+                            show: false 
+                        }
+                    }       
+                ],
+                series: [
+                    {
+                        name: 'pm2.5 levels',
+                        type: 'scatter',
+                        symbolSize: 5,
+                        emphasis: {
+                            focus: 'series'
+                        },   
+                        data: {{ merge }}
+
+                    }
+                ],
+                
+
+                
+            };
+            myChart2.setOption(option);
+    
+        
+    
+        </script>
+  </body>
+
+</html>
+
+
+
+
+<a href="{% url 'question'%}">Choose a new city?</a>
