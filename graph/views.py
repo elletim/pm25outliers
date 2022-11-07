@@ -7,8 +7,14 @@ import pandas as pd
 
 
 def question(request):
+    login = config.postgres["login"]
+    connection = psycopg2.connect(login)
+    cursor = connection.cursor()
+    cursor.execute('''SELECT lat, long FROM aq_meta where city_id=1''')
+    records = cursor.fetchall()
+    print(records)
     question = Question.objects.get(pk=1)
-    context = {'question':  question}
+    context = {'question':  question, 'records': records}
     return render(request, 'graph/question.html', context)
 
 def question2(request):
@@ -36,9 +42,6 @@ def get_pm25(cityid):
         cursor.execute('''SELECT pm2_5, datetime FROM aq_data WHERE city_id = (%s) order by datetime''', (cityid,))
         records = cursor.fetchall()
         return records 
-
-
-
 
 def results(request):
     question = Question.objects.get(pk=1)
