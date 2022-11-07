@@ -3,6 +3,8 @@ from .models import Choice, Question
 import statistics
 import psycopg2
 import config 
+import pandas as pd 
+
 
 def question(request):
     question = Question.objects.get(pk=1)
@@ -35,6 +37,9 @@ def get_pm25(cityid):
         records = cursor.fetchall()
         return records 
 
+
+
+
 def results(request):
     question = Question.objects.get(pk=1)
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
@@ -64,6 +69,7 @@ def results(request):
     return render(request, 'graph/results.html', context)
 
 def results2(request):
+    #month
     question = Question.objects.get(pk=1)
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
     selected_choice = str(selected_choice)
@@ -82,7 +88,7 @@ def results2(request):
     stdv_3 = [average - (3*std)] * len(pm25_nums)
     minpm25 = min(pm25_nums)
     maxpm25 = max(pm25_nums)
-    datetime_nums = [date_obj.strftime('%Y%m%d%H') for date_obj in datetime_nums]
+    datetime_nums = [date_obj.strftime('%Y%m') for date_obj in datetime_nums]
     datetime_nums = [int(x) for x in datetime_nums]
     startvalue = datetime_nums[0]
     merge = [list(i) for i in zip(datetime_nums, pm25_nums)]
@@ -92,6 +98,7 @@ def results2(request):
     return render(request, 'graph/results2.html', context)
 
 def results3(request):
+    #day
     question = Question.objects.get(pk=1)
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
     selected_choice = str(selected_choice)
@@ -110,7 +117,7 @@ def results3(request):
     stdv_3 = [average - (3*std)] * len(pm25_nums)
     minpm25 = min(pm25_nums)
     maxpm25 = max(pm25_nums)
-    datetime_nums = [date_obj.strftime('%Y%m%d%H') for date_obj in datetime_nums]
+    datetime_nums = [date_obj.strftime('%Y%m%d') for date_obj in datetime_nums]
     datetime_nums = [int(x) for x in datetime_nums]
     startvalue = datetime_nums[0]
     merge = [list(i) for i in zip(datetime_nums, pm25_nums)]

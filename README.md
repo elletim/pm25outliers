@@ -13,5 +13,9 @@ Now pm25outliers is ready to run in the terminal:
     python manage.py runserver 
 This command will display the development server.  The site will be found at 
     http://127.0.0.1:8000/graph
-Clicking one of the four cities will bring the user to the next page which displays the plots: 
-    http://127.0.0.1:8000/graph/results
+The graphs can be plotted by hour, day, or month.  The address for each is as follows: 
+    http://127.0.0.1:8000/graph/hour/
+    http://127.0.0.1:8000/graph/day/
+    http://127.0.0.1:8000/graph/month/
+Clicking one of the four cities will bring the user to the next page which displays the plots
+    
