@@ -10,11 +10,14 @@ def question(request):
     login = config.postgres["login"]
     connection = psycopg2.connect(login)
     cursor = connection.cursor()
-    cursor.execute('''SELECT lat, long FROM aq_meta where city_id=1''')
+    cursor.execute('''SELECT lat, long FROM aq_meta''')
     records = cursor.fetchall()
-    print(records)
+    records = [list(x) for x in records]
+    cursor.execute('''SELECT city FROM aq_meta''')
+    names = cursor.fetchall()
+    
     question = Question.objects.get(pk=1)
-    context = {'question':  question, 'records': records}
+    context = {'question':  question, 'records': records, 'names': names}
     return render(request, 'graph/question.html', context)
 
 def question2(request):
