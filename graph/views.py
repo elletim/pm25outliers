@@ -13,11 +13,8 @@ def question(request):
     cursor.execute('''SELECT lat, long FROM aq_meta''')
     records = cursor.fetchall()
     records = [list(x) for x in records]
-    cursor.execute('''SELECT city FROM aq_meta''')
-    names = cursor.fetchall()
-    
     question = Question.objects.get(pk=1)
-    context = {'question':  question, 'records': records, 'names': names}
+    context = {'question':  question, 'records': records}
     return render(request, 'graph/question.html', context)
 
 def question2(request):
@@ -85,6 +82,24 @@ def results2(request):
     pm25_list = get_pm25(cityid)
     pm25_nums = [x[0] for x in pm25_list]
     datetime_nums = [x[1] for x in pm25_list]
+
+    df = pd.DataFrame({'pm25': pm25_nums, 'date': datetime_nums})
+    df['date']= pd.to_datetime(df['date'])
+    df = df.groupby([df['date'].dt.year, df['date'].dt.month]).agg({'pm25':'mean'})
+    pm25_nums = df['pm25'].to_list()
+    x = list(df.index.values)
+
+    year = [i[0] for i in x]
+    month = [i[1] for i in x]
+    datetime_nums = [str(i) for i in zip(year, month)]
+    #for i in datetime_nums:
+        #i = i.strip().replace(',','').replace(' ','')
+    datetime_nums = [i.replace(',','').replace(' ','').replace('(','').replace(')','') for i in datetime_nums]   
+    datetime_nums = [i.strip() for i in datetime_nums]
+    print(datetime_nums)
+
+    
+    print(type(datetime_nums))
     average = statistics.mean(pm25_nums)
     averagevar = [average] * len(pm25_nums)
     std = statistics.stdev(pm25_nums)
@@ -94,10 +109,18 @@ def results2(request):
     stdv_3 = [average - (3*std)] * len(pm25_nums)
     minpm25 = min(pm25_nums)
     maxpm25 = max(pm25_nums)
-    datetime_nums = [date_obj.strftime('%Y%m') for date_obj in datetime_nums]
+    
+    #datetime_nums= pd.to_datetime(pd.Series(datetime_nums), format = '%Y%m%d')
+    #print(datetime_nums)
+    #datetime_nums = [date_obj.strftime('%Y%m') for date_obj in datetime_nums]
     datetime_nums = [int(x) for x in datetime_nums]
     startvalue = datetime_nums[0]
     merge = [list(i) for i in zip(datetime_nums, pm25_nums)]
+    
+    #second graph
+    
+    #cursor.execute('''SELECT pm2_5, datetime FROM aq_data''')
+    #records = cursor.fetchall()
     context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': averagevar, 'std': std,
     'plusstdv2' : stdv2, 'minusstdv2' : stdv_2, 'plusstdv3' : stdv3, 'minusstdv3' : stdv_3, 
     'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': merge, 'startvalue': startvalue}
