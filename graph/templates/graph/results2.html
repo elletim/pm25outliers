@@ -96,93 +96,32 @@
                     containLabel: true
                 },
                 tooltip: {
-                    showDelay: 0,
-                    formatter: function (params) {
-                        if (params.value.length > 1) {
-                            return (
-                                params.seriesName + 
-                                ' :<br/>' +
-                                params.value[0] +
-                                ' date ' +
-                                params.value[1] +
-                                ' pm2.5' 
-                            );
-                        } else {
-                            return (
-                                params.seriesName + 
-                                ' :<br/>' +
-                                params.name +
-                                ' date ' +
-                                params.value +
-                                ' pm2.5' 
-                            );
-                        }
-                    },
-                    axisPointer: {
-                        show: true,
-                        type: 'cross'
-                    }
+                    trigger: 'axis'  
                 },
-                visualMap: {
-                    max: {{ maxpm25 }},
-                    min: {{ minpm25 }},
-                    dimension: 1,
-                    orient: 'vertical',
-                    right: 10,
-                    top: 'center',
-                    text: ['high', 'low'],
-                    caculate: true,
-                    inRange: {
-                        color: ['gold', 'red']
-                    }
+                xAxis: {
+                    type: 'category',
+                    data: {{ datetime }}
+
                 },
-                xAxis: [
-                    {
-                        type: 'category',
-                        scale: true,
-                        axisLabel: {
-                            formatter: '{value}'
-                        },
-                        splitLine: {
-                            show: false
-                        }
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value',
-                        scale: true,
-                        axisLabel: {
-                            formatter: '{value}'
-                        },
-                        splitLine: {
-                            show: false 
-                        }
-                    }       
-                ],
+                yAxis: {
+                    type: 'value'
+                },
                 series: [
                     {
                         name: 'pm2.5 levels',
-                        type: 'scatter',
-                        symbolSize: 5,
-                        emphasis: {
-                            focus: 'series'
-                        },   
-                        data: {{ merge }}
-
+                        type: 'line',
+                        data: {{ pm25 }}
+                    },
+                    {
+                        type: 'line',
+                        data: {{ pm25_2 }}
                     }
-                ],
-                
-
+                ]
                 
             };
             myChart2.setOption(option);
-    
-        
-    
         </script>
   </body>
-
 </html>
 
 

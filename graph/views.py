@@ -43,6 +43,20 @@ def get_pm25(cityid):
         records = cursor.fetchall()
         return records 
 
+def get_df(cityid):
+    login = config.postgres["login"]
+    connection = psycopg2.connect(login)
+    cursor = connection.cursor()
+    cursor.execute('''SELECT * FROM aq_data WHERE city_id = (%s)''', (cityid,))
+    records = cursor.fetchall()
+    datetime = [x[1] for x in records]
+    pm25 = [x[2] for x in records]
+    df1 = pd.DataFrame({'pm25': pm25, 'date': datetime})
+    df1['date']= pd.to_datetime(df1['date'])
+    df1 = df1.groupby([df1['date'].dt.year, df1['date'].dt.month]).agg({'pm25':'mean'})
+    return(df1)
+
+
 def results(request):
     question = Question.objects.get(pk=1)
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
@@ -103,28 +117,24 @@ def results2(request):
     startvalue = datetime_nums[0]
     merge = [list(i) for i in zip(datetime_nums, pm25_nums)]
     
-    #second graph
+    #graph 2
     login = config.postgres["login"]
     connection = psycopg2.connect(login)
     cursor = connection.cursor()
     cursor.execute('''SELECT city FROM aq_meta''')
     citynames = cursor.fetchall()
-    cursor.execute('''SELECT pm2_5, datetime FROM aq_data''')
-    records = cursor.fetchall()
-    #pm25 = [x[0] for x in records]
-    #datetime = [x[1] for x in records]
-    #df1 = pd.DataFrame({'city': citynames, 'pm25': pm25, 'date': datetime})
-    #df1['date']= pd.to_datetime(df1['date'])
-    #df1 = df1.groupby([df1['date'].dt.year, df1['date'].dt.month]).agg({'pm25':'mean'})
-    #pm25 = df1['pm25'].to_list()
-    #x = list(df1.index.values)
-    #year1 = [i[0] for i in x]
-    #month1 = [i[1] for i in x]
-    #datetime= [str(i) for i in zip(year1, month1)]
-    #datetime = [i.replace(',','').replace(' ','').replace('(','').replace(')','') for i in datetime]
-    
+    df1 = get_df(0)
+    pm25 = df1['pm25'].to_list()
+    df2 = get_df(3)
+    pm25_2 = df2['pm25'].to_list()
+    x = list(df1.index.values)
+    year1 = [i[0] for i in x]
+    month1 = [i[1] for i in x]
+    datetime= [str(i) for i in zip(year1, month1)]
+    datetime = [i.replace(',','').replace(' ','').replace('(','').replace(')','') for i in datetime]
+    datetime= [int(x) for x in datetime]
     context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': averagevar, 'std': std,
-    'plusstdv1' : stdv1, 'minusstdv1' : stdv_1,  
+    'plusstdv1' : stdv1, 'minusstdv1' : stdv_1, 'pm25' : pm25, 'pm25_2': pm25_2, 'datetime' : datetime,
     'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': merge, 'startvalue': startvalue}
     return render(request, 'graph/results2.html', context)
 
@@ -158,7 +168,7 @@ def results3(request):
     minpm25 = min(pm25_nums)
     maxpm25 = max(pm25_nums)
     startvalue = datetime_nums[0]
-    merge = [list(i) for i in zip(datetime_nums, pm25_nums)]
+    
     #graph 2
     days = pd.date_range('2015-01-01', '2015-12-31').strftime('%m%d')
     days = [int(x) for x in days]
@@ -168,9 +178,9 @@ def results3(request):
     df_dates['dates']= pd.to_datetime(df_dates['dates'])
     df_dates = df_dates.groupby([df_dates['dates'].dt.month, df_dates['dates'].dt.day]).agg({'pm25':'mean'})
     pm25 = df_dates['pm25'].to_list()
-    context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': averagevar, 'std': std,
-    'plusstdv1' : stdv1, 'minusstdv1' : stdv_1, 'pm25': pm25,
-    'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': merge, 'startvalue': startvalue, 'days': days}
+    context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': averagevar,
+    'plusstdv1' : stdv1, 'minusstdv1' : stdv_1, 'pm25': pm25, 'city': selected_choice, 
+    'minpm25': minpm25, 'maxpm25': maxpm25, 'startvalue': startvalue, 'days': days}
     return render(request, 'graph/results3.html', context)
 
 
