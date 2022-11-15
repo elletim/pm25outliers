@@ -28,7 +28,7 @@
             xAxis: {
             type: 'category',
             axisLabel: {
-                interval: 3000,
+                interval: 100,
                 rotate:45
             },
             data: {{ datetime_list }}
@@ -65,27 +65,15 @@
                 data: {{ average }}
             },
             {
-                name: '+2 stdv',
+                name: '+1 stdv',
                 type: 'line',
-                data: {{ plusstdv2 }} 
+                data: {{ plusstdv1 }} 
             },
             {
-                name: '-2 stdv',
+                name: '-1 stdv',
                 type: 'line',
-                data: {{ minusstdv2 }} 
-            },
-            {
-                name: '+3 stdv',
-                type: 'line',
-                data: {{ plusstdv3 }} 
-            },
-            {
-                name: '-3 stdv',
-                type: 'line',
-                data: {{ minusstdv3 }} 
+                data: {{ minusstdv1 }} 
             }
-          
-            
         ]
         };
         myChart.setOption(option);
@@ -98,96 +86,36 @@
             var myChart2 = echarts.init(document.getElementById('main2'));
             var option = {
                 title: {
-                    text: "Scatter Plot",
+                    text: "Daily Average",
                     left: 'center'
                 },
                 grid: {
-                    left: '3%',
-                    right: '7%',
-                    bottom: '7%',
-                    containLabel: true
+                    left: '5%',
+                    right: '15%',
+                    bottom: '10%'
                 },
                 tooltip: {
-                    showDelay: 0,
-                    formatter: function (params) {
-                        if (params.value.length > 1) {
-                            return (
-                                params.seriesName + 
-                                ' :<br/>' +
-                                params.value[0] +
-                                ' date ' +
-                                params.value[1] +
-                                ' pm2.5' 
-                            );
-                        } else {
-                            return (
-                                params.seriesName + 
-                                ' :<br/>' +
-                                params.name +
-                                ' date ' +
-                                params.value +
-                                ' pm2.5' 
-                            );
-                        }
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    axisLabel: {
+                        interval: 5,
+                        rotate:45
                     },
-                    axisPointer: {
-                        show: true,
-                        type: 'cross'
-                    }
+                    data: {{ days }}
                 },
-                visualMap: {
-                    max: {{ maxpm25 }},
-                    min: {{ minpm25 }},
-                    dimension: 1,
-                    orient: 'vertical',
-                    right: 10,
-                    top: 'center',
-                    text: ['high', 'low'],
-                    caculate: true,
-                    inRange: {
-                        color: ['gold', 'red']
-                    }
+                yAxis: {
+                    type: 'value'
                 },
-                xAxis: [
-                    {
-                        type: 'category',
-                        scale: true,
-                        axisLabel: {
-                            formatter: '{value}'
-                        },
-                        splitLine: {
-                            show: false
-                        }
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value',
-                        scale: true,
-                        axisLabel: {
-                            formatter: '{value}'
-                        },
-                        splitLine: {
-                            show: false 
-                        }
-                    }       
-                ],
                 series: [
                     {
-                        name: 'pm2.5 levels',
-                        type: 'scatter',
-                        symbolSize: 5,
-                        emphasis: {
-                            focus: 'series'
-                        },   
-                        data: {{ merge }}
-
+                        name: 'pm2.5 level',
+                        type: 'bar',
+                        data : {{ pm25 }}
                     }
-                ],
-                
-
-                
-            };
+                ]
+            };      
             myChart2.setOption(option);
     
         

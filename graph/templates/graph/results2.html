@@ -28,7 +28,7 @@
             xAxis: {
             type: 'category',
             axisLabel: {
-                interval: 3000,
+                interval: 1,
                 rotate:45
             },
             data: {{ datetime_list }}
@@ -65,27 +65,15 @@
                 data: {{ average }}
             },
             {
-                name: '+2 stdv',
+                name: '+1 stdv',
                 type: 'line',
-                data: {{ plusstdv2 }} 
+                data: {{ plusstdv1 }} 
             },
             {
-                name: '-2 stdv',
+                name: '-1 stdv',
                 type: 'line',
-                data: {{ minusstdv2 }} 
-            },
-            {
-                name: '+3 stdv',
-                type: 'line',
-                data: {{ plusstdv3 }} 
-            },
-            {
-                name: '-3 stdv',
-                type: 'line',
-                data: {{ minusstdv3 }} 
+                data: {{ minusstdv1 }} 
             }
-          
-            
         ]
         };
         myChart.setOption(option);
