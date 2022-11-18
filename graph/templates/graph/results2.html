@@ -31,7 +31,7 @@
                 interval: 1,
                 rotate:45
             },
-            data: {{ datetime_list }}
+            data: {{ datetime_list|safe }}
             }, 
             yAxis: {},
             toolbox: {
@@ -127,4 +127,4 @@
 
 
 
-<a href="{% url 'question'%}">Choose a new city?</a>
+<a href="{% url 'question2'%}">Choose a new city?</a>

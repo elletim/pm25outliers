@@ -3,7 +3,8 @@ from .models import Choice, Question
 import statistics
 import psycopg2
 import config 
-import pandas as pd 
+import pandas as pd
+import json 
 
 
 def question(request):
@@ -76,13 +77,13 @@ def results(request):
     stdv_3 = [average - (3*std)] * len(pm25_nums)
     minpm25 = min(pm25_nums)
     maxpm25 = max(pm25_nums)
-    datetime_nums = [date_obj.strftime('%Y%m%d%H') for date_obj in datetime_nums]
-    datetime_nums = [int(x) for x in datetime_nums]
+    datetime_nums = [date_obj.strftime('%Y/%m/%d/%H') for date_obj in datetime_nums]
+    #datetime_nums = [int(x) for x in datetime_nums]
     startvalue = datetime_nums[0]
     merge = [list(i) for i in zip(datetime_nums, pm25_nums)]
-    context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': averagevar, 'std': std,
+    context = {'pm25_list' : pm25_nums, 'datetime_list': json.dumps(datetime_nums), 'average': averagevar, 'std': std,
     'plusstdv2' : stdv2, 'minusstdv2' : stdv_2, 'plusstdv3' : stdv3, 'minusstdv3' : stdv_3, 
-    'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': merge, 'startvalue': startvalue}
+    'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': json.dumps(merge), 'startvalue': json.dumps(startvalue)}
     return render(request, 'graph/results.html', context)
 
 def results2(request):
@@ -104,8 +105,7 @@ def results2(request):
     year = [i[0] for i in x]
     month = [i[1] for i in x]
     datetime_nums = [str(i) for i in zip(year, month)]
-    datetime_nums = [i.replace(',','').replace(' ','').replace('(','').replace(')','') for i in datetime_nums]   
-    datetime_nums = [int(x) for x in datetime_nums]
+    datetime_nums = [i.replace(',','/').replace(' ','').replace('(','').replace(')','') for i in datetime_nums]   
     average = statistics.mean(pm25_nums)
     averagevar = [average] * len(pm25_nums)
     std = statistics.stdev(pm25_nums)
@@ -133,7 +133,8 @@ def results2(request):
     datetime= [str(i) for i in zip(year1, month1)]
     datetime = [i.replace(',','').replace(' ','').replace('(','').replace(')','') for i in datetime]
     datetime= [int(x) for x in datetime]
-    context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': averagevar, 'std': std,
+
+    context = {'pm25_list' : pm25_nums, 'datetime_list': json.dumps(datetime_nums), 'average': averagevar, 'std': std,
     'plusstdv1' : stdv1, 'minusstdv1' : stdv_1, 'pm25' : pm25, 'pm25_2': pm25_2, 'datetime' : datetime,
     'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': merge, 'startvalue': startvalue}
     return render(request, 'graph/results2.html', context)
@@ -158,8 +159,7 @@ def results3(request):
     month = [i[1] for i in x]
     day = [i[2] for i in x]
     datetime_nums = [str(i) for i in zip(year, month, day)]
-    datetime_nums = [i.replace(',','').replace(' ','').replace('(','').replace(')','') for i in datetime_nums]   
-    datetime_nums = [int(x) for x in datetime_nums]
+    datetime_nums = [i.replace(',','/').replace(' ','').replace('(','').replace(')','') for i in datetime_nums]  
     average = statistics.mean(pm25_nums)
     averagevar = [average] * len(pm25_nums)
     std = statistics.stdev(pm25_nums)
@@ -170,17 +170,18 @@ def results3(request):
     startvalue = datetime_nums[0]
     
     #graph 2
-    days = pd.date_range('2015-01-01', '2015-12-31').strftime('%m%d')
-    days = [int(x) for x in days]
+    days = pd.date_range('2015-01-01', '2015-12-31').strftime('%m/%d')
+    days = [str(x) for x in days]
     pm25 = [x[0] for x in pm25_list]
     dates = [x[1] for x in pm25_list]
     df_dates = pd.DataFrame({'pm25': pm25, 'dates': dates})
     df_dates['dates']= pd.to_datetime(df_dates['dates'])
     df_dates = df_dates.groupby([df_dates['dates'].dt.month, df_dates['dates'].dt.day]).agg({'pm25':'mean'})
     pm25 = df_dates['pm25'].to_list()
-    context = {'pm25_list' : pm25_nums, 'datetime_list': datetime_nums, 'average': averagevar,
+
+    context = {'pm25_list' : pm25_nums, 'datetime_list': json.dumps(datetime_nums), 'average': averagevar,
     'plusstdv1' : stdv1, 'minusstdv1' : stdv_1, 'pm25': pm25, 'city': selected_choice, 
-    'minpm25': minpm25, 'maxpm25': maxpm25, 'startvalue': startvalue, 'days': days}
+    'minpm25': minpm25, 'maxpm25': maxpm25, 'startvalue': startvalue, 'days': json.dumps(days)}
     return render(request, 'graph/results3.html', context)
 
 

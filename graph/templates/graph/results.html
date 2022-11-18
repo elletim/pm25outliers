@@ -33,7 +33,7 @@
                 interval: 3000,
                 rotate:45
             },
-            data: {{ datetime_list }}
+            data: {{ datetime_list|safe }}
             }, 
             yAxis: {},
             toolbox: {
@@ -48,7 +48,7 @@
             },
             dataZoom: [
             {
-                startValue: {{ startvalue }}
+                startValue: {{ startvalue|safe }}
             },
             {
                 type: 'inside'
@@ -182,7 +182,7 @@
                         emphasis: {
                             focus: 'series'
                         },   
-                        data: {{ merge }}
+                        data: {{ merge|safe }}
 
                     }
                 ],
