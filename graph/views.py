@@ -5,6 +5,7 @@ import psycopg2
 import config 
 import pandas as pd
 import json 
+import numpy as np
 
 
 def question(request):
@@ -124,9 +125,12 @@ def results2(request):
     cursor.execute('''SELECT city FROM aq_meta''')
     citynames = cursor.fetchall()
     df1 = get_df(0)
-    pm25 = df1['pm25'].to_list()
     df2 = get_df(3)
+    pm25 = df1['pm25'].to_list()
     pm25_2 = df2['pm25'].to_list()
+    diff = len(pm25)-len(pm25_2)
+    fill = [0] * diff
+    pm25_2 = fill + pm25_2
     x = list(df1.index.values)
     year1 = [i[0] for i in x]
     month1 = [i[1] for i in x]
