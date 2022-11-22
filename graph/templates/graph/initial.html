@@ -11,14 +11,18 @@
                 window.location="day/";
                 break;
                 case "Monthly": 
-                window.location='month/';
+                window.location="month/";
+                break;
+                case "All": 
+                window.location="all/";
+                break;     
             }
         }
     </script>
 
 <form >
     <fieldset>
-        <legend><h1>Analyzing PM2.5 Levels</h1></legend>
+        <legend><h1>Analyzing PM2.5 Levels By City</h1></legend>
         
         <label for="question">How would you like the data grouped?</label><br>
         <select id="choice", name="choice" onChange="SelectRedirect();">
@@ -26,6 +30,7 @@
             <option value ="Hourly">Hourly</option>
             <option value ="Daily">Daily</option>
             <option value ="Monthly">Monthly</option>
+            <option value ="All">All Cities</option>
         </select>
     
     </fieldset>

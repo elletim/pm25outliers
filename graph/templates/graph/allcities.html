@@ -1,0 +1,120 @@
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+  </head>
+  <body>
+ </script>
+ <div id="main2" style="width: 1300px;height:600px;"></div>
+ <script type="text/javascript">
+     var myChart2 = echarts.init(document.getElementById('main2'));
+     var option = {
+         title: {
+             text: "All Cities",
+             left: 'center'
+         },
+         grid: {
+             left: '3%',
+             right: '7%',
+             bottom: '7%',
+             containLabel: true
+         },
+         tooltip: {
+             order: 'valueDesc',
+             trigger: 'axis'  
+         },
+         xAxis: {
+             type: 'category',
+             data: {{ datetime|safe }}
+
+         },
+         yAxis: {
+             type: 'value'
+         },
+         
+         emphasis: {
+            focus: 'series'
+         },
+         series: [
+             {
+                 name: {{ name|safe }},
+                 type: 'line',
+                 data: {{ pm25 }}
+             },
+             {
+                 name: {{ name1|safe }},
+                 type: 'line',
+                 data: {{ pm25_1|safe }}
+             },
+             {
+                 name: {{ name2|safe }},
+                 type: 'line',
+                 data: {{ pm25_2|safe }}
+             },
+             {
+                 name: {{ name3|safe }},
+                 type: 'line',
+                 data: {{ pm25_3|safe }}
+             },
+             {
+                 name: {{ name4|safe }},
+                 type: 'line',
+                 data: {{ pm25_4|safe }}
+             },
+             {
+                 name: {{ name5|safe }},
+                 type: 'line',
+                 data: {{ pm25_5|safe }}
+             },
+             {
+                 name: {{ name6|safe }},
+                 type: 'line',
+                 data: {{ pm25_6|safe }}
+             },
+             {
+                 name: {{ name7|safe }},
+                 type: 'line',
+                 data: {{ pm25_7|safe }}
+             },
+             {
+                 name: {{ name8|safe }},
+                 type: 'line',
+                 data: {{ pm25_8|safe }}
+             },
+             {
+                 name: {{ name9|safe }},
+                 type: 'line',
+                 data: {{ pm25_9|safe }}
+             },
+             {
+                 name: {{ name10|safe }},
+                 type: 'line',
+                 data: {{ pm25_10|safe }}
+             },
+             {
+                 name: {{ name11|safe }},
+                 type: 'line',
+                 data: {{ pm25_11|safe }}
+             },
+             {
+                 name: {{ name12|safe }},
+                 type: 'line',
+                 data: {{ pm25_12|safe }}
+             },
+             {
+                 name: {{ name13|safe }},
+                 type: 'line',
+                 data: {{ pm25_13|safe }}
+             }     
+         ]
+         
+     };
+     myChart2.setOption(option);
+ </script>
+</body>
+</html>
+
+<a href="{% url 'initial'%}">Choose a new grouping?</a>
+
+
