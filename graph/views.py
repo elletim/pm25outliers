@@ -7,7 +7,10 @@ import pandas as pd
 import json 
 import numpy as np
 
-
+def initial(request):
+    context = {'a': 2}
+    return render(request,'graph/initial.html', context)
+    
 def question(request):
     login = config.postgres["login"]
     connection = psycopg2.connect(login)
