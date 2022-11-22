@@ -28,7 +28,7 @@
             xAxis: {
             type: 'category',
             axisLabel: {
-                interval: 1,
+                interval: 2,
                 rotate:45
             },
             data: {{ datetime_list|safe }}
@@ -100,7 +100,7 @@
                 },
                 xAxis: {
                     type: 'category',
-                    data: {{ datetime }}
+                    data: {{ datetime|safe }}
 
                 },
                 yAxis: {
@@ -108,14 +108,73 @@
                 },
                 series: [
                     {
-                        name: 'pm2.5 levels',
+                        name: '',
                         type: 'line',
                         data: {{ pm25 }}
                     },
                     {
                         type: 'line',
-                        data: {{ pm25_2 }}
-                    }
+                        data: {{ pm25_1|safe }}
+                    },
+                    {
+                        type: 'line',
+                        data: {{ pm25_2|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_3|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_4|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_5|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_6|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_7|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_8|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_9|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_10|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_11|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_12|safe }}
+                    },
+                    {
+                        name: '',
+                        type: 'line',
+                        data: {{ pm25_13|safe }}
+                    }     
                 ]
                 
             };
