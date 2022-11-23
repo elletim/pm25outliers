@@ -180,61 +180,24 @@ def allcities(request):
     cursor.execute('''SELECT city FROM aq_meta''')
     citynames = cursor.fetchall()
     citynames = [i[0] for i in citynames]
+    print(citynames)
     df = get_df(0)
     pm25 = df['pm25'].to_list()
-    df1= get_df(1)
-    pm25_1 = df1['pm25'].to_list()
-    pm25_1 = get_fill(pm25, pm25_1)
-    df2= get_df(2)
-    pm25_2 = df2['pm25'].to_list()
-    pm25_2 = get_fill(pm25, pm25_2)
-    df3= get_df(3)
-    pm25_3 = df3['pm25'].to_list()
-    pm25_3 = get_fill(pm25, pm25_3)
-    df4= get_df(4)
-    pm25_4 = df4['pm25'].to_list()
-    pm25_4 = get_fill(pm25, pm25_4)
-    df5= get_df(5)
-    pm25_5 = df5['pm25'].to_list()
-    pm25_5 = get_fill(pm25, pm25_5)
-    df6= get_df(1)
-    pm25_6 = df6['pm25'].to_list()
-    pm25_6 = get_fill(pm25, pm25_6)
-    df7= get_df(7)
-    pm25_7 = df7['pm25'].to_list()
-    pm25_7 = get_fill(pm25, pm25_7)
-    df8= get_df(8)
-    pm25_8 = df8['pm25'].to_list()
-    pm25_8 = get_fill(pm25, pm25_8)
-    df9= get_df(9)
-    pm25_9 = df9['pm25'].to_list()
-    pm25_9 = get_fill(pm25, pm25_9)
-    df10= get_df(10)
-    pm25_10 = df10['pm25'].to_list()
-    pm25_10 = get_fill(pm25, pm25_10)
-    df11= get_df(11)
-    pm25_11 = df11['pm25'].to_list()
-    pm25_11 = get_fill(pm25, pm25_11)
-    df12= get_df(12)
-    pm25_12 = df12['pm25'].to_list()
-    pm25_12 = get_fill(pm25, pm25_12)
-    df13= get_df(13)
-    pm25_13 = df13['pm25'].to_list()
-    pm25_13 = get_fill(pm25, pm25_13)
+   
     x = list(df.index.values)
     year1 = [i[0] for i in x]
     month1 = [i[1] for i in x]
     datetime= [str(i) for i in zip(year1, month1)]
     datetime = [i.replace(',','/').replace(' ','').replace('(','').replace(')','') for i in datetime]
-    fulllist = pm25 + pm25_1
-    context = {'pm25' : pm25, 'pm25_1': json.dumps(pm25_1), 'pm25_2': json.dumps(pm25_2), 'pm25_3': json.dumps(pm25_3), 'pm25_4': json.dumps(pm25_4), 
-    'pm25_5': json.dumps(pm25_5), 'pm25_6': json.dumps(pm25_6), 'pm25_7': json.dumps(pm25_7), 'pm25_8': json.dumps(pm25_8),
-    'pm25_9': json.dumps(pm25_9), 'pm25_10': json.dumps(pm25_10), 'pm25_11': json.dumps(pm25_11), 'pm25_12': json.dumps(pm25_12),
-    'pm25_12': json.dumps(pm25_12), 'pm25_13': json.dumps(pm25_13), 'datetime' : json.dumps(datetime), 'citynames': json.dumps(citynames),
-    'name': json.dumps(citynames[0]), 'name1': json.dumps(citynames[1]), 'name2': json.dumps(citynames[2]), 'name3': json.dumps(citynames[3]), 
-    'name4': json.dumps(citynames[4]), 'name5': json.dumps(citynames[5]), 'name6': json.dumps(citynames[6]), 'name7': json.dumps(citynames[7]),
-    'name8': json.dumps(citynames[8]), 'name9': json.dumps(citynames[9]), 'name10': json.dumps(citynames[10]), 'name11': json.dumps(citynames[11]),
-    'name12': json.dumps(citynames[12]), 'name13': json.dumps(citynames[13])}
+
+    dataArray = []
+    for indx, val in enumerate(citynames):
+        pm25_i = get_df(indx)['pm25'].to_list()
+        pm25_i = get_fill(pm25, pm25_i)
+        d = { 'name': val, 'type': 'line', 'data': pm25_i}
+        dataArray.append(d)
+
+    context = {'datetime' : json.dumps(datetime),'dataArray': json.dumps(dataArray)}
     return render(request, 'graph/allcities.html', context)
 
 
