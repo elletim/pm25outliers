@@ -9,7 +9,7 @@
         var myChart = echarts.init(document.getElementById('main'));
         var option = {
             title: {
-                text: "{{ city }}",
+                text: "{{ city }} Hourly Analysis",
                 left: 'center'
             },
             tooltip: {
@@ -93,12 +93,12 @@
     
 
     </script>
-        <div id="main2" style="width: 1300px;height:600px;"></div>
+        <div id="main2" style="width: 900px;height:600px;"></div>
         <script type="text/javascript">
             var myChart2 = echarts.init(document.getElementById('main2'));
             var option = {
                 title: {
-                    text: "Scatter Plot",
+                    text: "{{ city }} Scatter Plot",
                     left: 'center'
                 },
                 grid: {

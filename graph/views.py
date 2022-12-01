@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Choice, Question
 import statistics
 import psycopg2
@@ -123,6 +123,19 @@ def results2(request):
     maxpm25 = max(pm25_nums)
     startvalue = datetime_nums[0]
 
+    #montly average
+    pm25 = [x[0] for x in pm25_list]
+    dates = [x[1] for x in pm25_list]
+    df_dates = pd.DataFrame({'pm25': pm25, 'dates': dates})
+    df_dates['dates']= pd.to_datetime(df_dates['dates'])
+    df_dates = df_dates.groupby([df_dates['dates'].dt.month, df_dates['dates'].dt.month]).agg({'pm25':'mean'})
+    pm25 = df_dates['pm25'].to_list()
+
+    #monthly averages- COVID impacts
+    #print(df_dates['dates'].to_list())
+    #covid_df = pd.DataFrame({'year': df['dates'].dt.year})
+    #df = pd.DataFrame({'pm25': pm25_nums, 'date': datetime_nums})
+    #print(covid_df.head())
     context = {'pm25_list' : pm25_nums, 'datetime_list': json.dumps(datetime_nums), 'average': averagevar, 'std': std,
     'plusstdv1' : stdv1, 'minusstdv1' : stdv_1,  'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'startvalue': startvalue}
     return render(request, 'graph/results2.html', context)
@@ -166,6 +179,20 @@ def results3(request):
     df_dates['dates']= pd.to_datetime(df_dates['dates'])
     df_dates = df_dates.groupby([df_dates['dates'].dt.month, df_dates['dates'].dt.day]).agg({'pm25':'mean'})
     pm25 = df_dates['pm25'].to_list()
+
+    #daily report information
+    max_avg = max(pm25)
+    min_avg = min(pm25)
+    mean_avg = statistics.mean(pm25)
+    median_avg = statistics.median(pm25)
+    percentile_25 = np.percentile(pm25, 25)
+    percentile_75 = np.percentile(pm25, 75)
+    print(min_avg)
+    print(max_avg)
+    print(mean_avg)
+    print(median_avg)
+    print(percentile_25)
+    print(percentile_75)
 
     context = {'pm25_list' : pm25_nums, 'datetime_list': json.dumps(datetime_nums), 'average': averagevar,
     'plusstdv1' : stdv1, 'minusstdv1' : stdv_1, 'pm25': pm25, 'city': selected_choice, 
