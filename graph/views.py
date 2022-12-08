@@ -68,6 +68,7 @@ def get_fill(pm25, pm):
     return(pm)
 
 def results(request):
+    #hour
     question = Question.objects.get(pk=1)
     selected_choice = question.choice_set.get(pk=request.POST['choice'])
     selected_choice = str(selected_choice)
@@ -86,6 +87,8 @@ def results(request):
     stdv_3 = [average - (3*std)] * len(pm25_nums)
     minpm25 = min(pm25_nums)
     maxpm25 = max(pm25_nums)
+    median_avg = statistics.median(pm25_nums)
+    print(median_avg)
     datetime_nums = [date_obj.strftime('%Y/%m/%d/%H') for date_obj in datetime_nums]
     startvalue = datetime_nums[0]
     merge = [list(i) for i in zip(datetime_nums, pm25_nums)]
@@ -131,11 +134,6 @@ def results2(request):
     df_dates = df_dates.groupby([df_dates['dates'].dt.month, df_dates['dates'].dt.month]).agg({'pm25':'mean'})
     pm25 = df_dates['pm25'].to_list()
 
-    #monthly averages- COVID impacts
-    #print(df_dates['dates'].to_list())
-    #covid_df = pd.DataFrame({'year': df['dates'].dt.year})
-    #df = pd.DataFrame({'pm25': pm25_nums, 'date': datetime_nums})
-    #print(covid_df.head())
     context = {'pm25_list' : pm25_nums, 'datetime_list': json.dumps(datetime_nums), 'average': averagevar, 'std': std,
     'plusstdv1' : stdv1, 'minusstdv1' : stdv_1,  'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'startvalue': startvalue}
     return render(request, 'graph/results2.html', context)
@@ -187,12 +185,6 @@ def results3(request):
     median_avg = statistics.median(pm25)
     percentile_25 = np.percentile(pm25, 25)
     percentile_75 = np.percentile(pm25, 75)
-    print(min_avg)
-    print(max_avg)
-    print(mean_avg)
-    print(median_avg)
-    print(percentile_25)
-    print(percentile_75)
 
     context = {'pm25_list' : pm25_nums, 'datetime_list': json.dumps(datetime_nums), 'average': averagevar,
     'plusstdv1' : stdv1, 'minusstdv1' : stdv_1, 'pm25': pm25, 'city': selected_choice, 

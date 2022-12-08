@@ -81,12 +81,12 @@
     
 
     </script>
-        <div id="main2" style="width: 1300px;height:600px;"></div>
+        <div id="main2" style="width: 1300px;height:400px;"></div>
         <script type="text/javascript">
             var myChart2 = echarts.init(document.getElementById('main2'));
             var option = {
                 title: {
-                    text: "Daily Average",
+                    text: "{{ city }} Daily Average",
                     left: 'center'
                 },
                 grid: {
@@ -96,6 +96,12 @@
                 },
                 tooltip: {
                     trigger: 'axis'
+                },
+                toolbox: {
+                right: 5,
+                feature: {
+                saveAsImage: {}
+                }
                 },
                 xAxis: {
                     type: 'category',
