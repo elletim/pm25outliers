@@ -20,4 +20,6 @@ The address for each choice is as follows:
     http://127.0.0.1:8000/graph/all/
 Clicking one of the fourteen cities will bring the user to the next page which displays the plots.
 At the bottom of each page is a link than will allow the user to select a new city or select a new grouping. 
+
+** any data that was generated for the final PM25 report is commented at the end of each view, before the context.  To view the data, simply uncomment the print statement.
     

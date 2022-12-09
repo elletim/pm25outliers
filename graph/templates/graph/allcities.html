@@ -29,6 +29,14 @@
              order: 'valueDesc',
              trigger: 'axis'  
          },
+         dataZoom: [
+            {
+                startValue: 2004
+            },
+            {
+                type: 'inside'
+            }
+        ],
          xAxis: {
              type: 'category',
              data: {{ datetime|safe }}

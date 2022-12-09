@@ -134,6 +134,9 @@ def results2(request):
     df_dates = df_dates.groupby([df_dates['dates'].dt.month, df_dates['dates'].dt.month]).agg({'pm25':'mean'})
     pm25 = df_dates['pm25'].to_list()
 
+    #report data: monthly average
+    #print(pm25)
+
     context = {'pm25_list' : pm25_nums, 'datetime_list': json.dumps(datetime_nums), 'average': averagevar, 'std': std,
     'plusstdv1' : stdv1, 'minusstdv1' : stdv_1,  'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'startvalue': startvalue}
     return render(request, 'graph/results2.html', context)
@@ -185,6 +188,7 @@ def results3(request):
     median_avg = statistics.median(pm25)
     percentile_25 = np.percentile(pm25, 25)
     percentile_75 = np.percentile(pm25, 75)
+    #print(max_avg, min_avg, mean_avg, median_avg, percentile_25, percentile_75)
 
     context = {'pm25_list' : pm25_nums, 'datetime_list': json.dumps(datetime_nums), 'average': averagevar,
     'plusstdv1' : stdv1, 'minusstdv1' : stdv_1, 'pm25': pm25, 'city': selected_choice, 
@@ -199,7 +203,6 @@ def allcities(request):
     cursor.execute('''SELECT city FROM aq_meta''')
     citynames = cursor.fetchall()
     citynames = [i[0] for i in citynames]
-    print(citynames)
     df = get_df(0)
     pm25 = df['pm25'].to_list()
    
