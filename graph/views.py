@@ -87,14 +87,26 @@ def results(request):
     stdv_3 = [average - (3*std)] * len(pm25_nums)
     minpm25 = min(pm25_nums)
     maxpm25 = max(pm25_nums)
-    median_avg = statistics.median(pm25_nums)
-    print(median_avg)
     datetime_nums = [date_obj.strftime('%Y/%m/%d/%H') for date_obj in datetime_nums]
     startvalue = datetime_nums[0]
     merge = [list(i) for i in zip(datetime_nums, pm25_nums)]
+
+    #report data: hourly average
+    pm25 = [x[0] for x in pm25_list]
+    dates = [x[1] for x in pm25_list]
+    df_dates = pd.DataFrame({'pm25': pm25, 'dates': dates})
+    df_dates['dates']= pd.to_datetime(df_dates['dates'])
+    df_dates = df_dates.groupby([ df_dates['dates'].dt.hour]).agg({'pm25':'mean'})
+    pm25 = df_dates['pm25'].to_list()
+    pm25 = [round(i,2) for i in pm25]
+    avg_hour = statistics.mean(pm25)
+    hours = list(range(24))
+    
+
     context = {'pm25_list' : pm25_nums, 'datetime_list': json.dumps(datetime_nums), 'average': averagevar, 'std': std,
     'plusstdv2' : stdv2, 'minusstdv2' : stdv_2, 'plusstdv3' : stdv3, 'minusstdv3' : stdv_3, 
-    'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': json.dumps(merge), 'startvalue': json.dumps(startvalue)}
+    'city': selected_choice, 'minpm25': minpm25, 'maxpm25': maxpm25, 'merge': json.dumps(merge), 'startvalue': json.dumps(startvalue),
+    'pm25': pm25, 'hours': hours, 'avg_hour': avg_hour}
     return render(request, 'graph/results.html', context)
 
 def results2(request):
@@ -181,7 +193,7 @@ def results3(request):
     df_dates = df_dates.groupby([df_dates['dates'].dt.month, df_dates['dates'].dt.day]).agg({'pm25':'mean'})
     pm25 = df_dates['pm25'].to_list()
 
-    #daily report information
+    #report data: daily numbers
     max_avg = max(pm25)
     min_avg = min(pm25)
     mean_avg = statistics.mean(pm25)

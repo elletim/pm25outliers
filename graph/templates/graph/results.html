@@ -186,10 +186,55 @@
                 ],     
             };
             myChart2.setOption(option);
+        </script>
+
+        </script>
+        <div id="main3" style="width: 1300px;height:400px;"></div>
+        <script type="text/javascript">
+            var myChart3 = echarts.init(document.getElementById('main3'));
+            var option = {
+                title: {
+                    text: "{{ city }} Daily Average",
+                    left: 'center'
+                },
+                grid: {
+                    left: '5%',
+                    right: '15%',
+                    bottom: '10%'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                toolbox: {
+                right: 5,
+                feature: {
+                saveAsImage: {}
+                }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: {{ hours }}
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: 'pm2.5 level',
+                        type: 'bar',
+                        data : {{ pm25 }}
+                    },
+                ]
+            };      
+            myChart3.setOption(option);
     
         
     
         </script>
+
+
+
+
   </body>
 
 </html>
