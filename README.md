@@ -8,6 +8,26 @@ The tables aq_data and aq_meta also need to be created. If the tables do not exi
 run the python project Project 1 Metadata in the terminal:
     python ingest_aq_data.py
     python ingest_aq_meta.py
+
+Next, the question and choice models need to be populated, which can be done in the Python shell.  Below is a list of the commands:
+    from graph.models import Choice, Question
+    >>>q = Question(question_text = "What city would you like to select?")
+    >>>q.choice_set.create(choice_text="Los Angeles", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/United_States/California/Los_Angeles.txt")
+    >>>q.choice_set.create(choice_text="San Diego", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/United_States/California/San_Diego.txt")
+    >>>q.choice_set.create(choice_text="New York City", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/United_States/New_York/New_York_City.txt")
+    >>>q.choice_set.create(choice_text="New Delhi", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/India/NCT/New_Delhi.txt")
+    >>>q.choice_set.create(choice_text="San Francisco", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/United_States/California/San_Francisco.txt")
+    >>>q.choice_set.create(choice_text="Denver", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/United_States/Colorado/Denver.txt")
+    >>>q.choice_set.create(choice_text="Atlanta", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/United_States/Georgia/Atlanta.txt")
+    >>>q.choice_set.create(choice_text="Houston", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/United_States/Texas/Houston.txt")
+    >>>q.choice_set.create(choice_text="Phoenix", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/United_States/Arizona/Phoenix.txt")
+    >>>q.choice_set.create(choice_text="Baltimore", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/United_States/Maryland/Baltimore.txt")
+    >>>q.choice_set.create(choice_text="Mumbai", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/India/Maharashtra/Mumbai.txt")
+    >>>q.choice_set.create(choice_text="Dubai", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/United_Arab_Emirates/Dubai/Dubai.txt")
+    >>>q.choice_set.create(choice_text="Dhaka", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/Bangladesh/Dhaka/Dhaka.txt")
+    >>>q.choice_set.create(choice_text="Guangzhou", choice_url="http://berkeleyearth.lbl.gov/air-quality/maps/cities/China/Guangdong/Guangzhou.txt")
+
+
 Now pm25outliers is ready to run in the terminal:
     python manage.py runserver 
 This command will display the development server.  The site will be found at 
